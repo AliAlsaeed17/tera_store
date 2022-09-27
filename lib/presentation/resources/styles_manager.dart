@@ -1,7 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
-import 'package:tera_store/presentation/fonts_manager.dart';
+
+import 'fonts_manager.dart';
 
 TextStyle _getTextStyle(
   double fontSize,

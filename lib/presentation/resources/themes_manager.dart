@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tera_store/presentation/colors_manager.dart';
-import 'package:tera_store/presentation/fonts_manager.dart';
-import 'package:tera_store/presentation/styles_manager.dart';
-import 'package:tera_store/presentation/values_manager.dart';
+import 'package:tera_store/presentation/resources/fonts_manager.dart';
+import 'package:tera_store/presentation/resources/styles_manager.dart';
+import 'package:tera_store/presentation/resources/values_manager.dart';
+import 'colors_manager.dart';
 
 ThemeData getApplicationTheme() {
   return ThemeData(
