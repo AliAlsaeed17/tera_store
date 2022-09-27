@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tera_store/presentation/themes_manager.dart';
+import 'package:tera_store/presentation/resources/themes_manager.dart';
 
 class MyApp extends StatefulWidget {
   //private named constructor
