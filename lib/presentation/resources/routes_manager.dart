@@ -3,6 +3,7 @@ import 'package:tera_store/presentation/auth/forgot_password/forgot_password_vie
 import 'package:tera_store/presentation/auth/login/login_view.dart';
 import 'package:tera_store/presentation/auth/register/register.dart';
 import 'package:tera_store/presentation/main/main_view.dart';
+import 'package:tera_store/presentation/onBoarding/onBoarding_view.dart';
 import 'package:tera_store/presentation/resources/strings_manager.dart';
 import 'package:tera_store/presentation/store_details/store_details.dart';
 
@@ -10,6 +11,7 @@ import '../splah/splash_view.dart';
 
 class Routes {
   static const String splashRoute = "/";
+  static const String onBoardingRoute = "/onBoarding";
   static const String loginRoute = "/login";
   static const String registerRoute = "/register";
   static const String forgotPasswordRoute = "/forgotPassword";
@@ -22,6 +24,8 @@ class RouteGenerator {
     switch (settings.name) {
       case Routes.splashRoute:
         return MaterialPageRoute(builder: (_) => SplashView());
+      case Routes.onBoardingRoute:
+        return MaterialPageRoute(builder: (_) => OnBoardingView());
       case Routes.loginRoute:
         return MaterialPageRoute(builder: (_) => LoginView());
       case Routes.registerRoute:
