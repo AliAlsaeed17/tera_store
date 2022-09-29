@@ -3,8 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tera_store/presentation/resources/assets_manager.dart';
 import 'package:tera_store/presentation/resources/colors_manager.dart';
+import 'package:tera_store/presentation/resources/constants_manager.dart';
 import 'package:tera_store/presentation/resources/strings_manager.dart';
 import 'package:tera_store/presentation/resources/values_manager.dart';
+
+import '../resources/routes_manager.dart';
 
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({Key? key}) : super(key: key);
@@ -48,6 +51,8 @@ class _OnboardingViewState extends State<OnBoardingView> {
     return Scaffold(
       backgroundColor: ColorManager.white,
       appBar: AppBar(
+        elevation: AppSize.s0,
+        backgroundColor: ColorManager.white,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: ColorManager.white,
           statusBarBrightness: Brightness.dark,
@@ -66,24 +71,109 @@ class _OnboardingViewState extends State<OnBoardingView> {
         },
       ),
       bottomSheet: Container(
-        height: AppSize.s100,
         color: ColorManager.white,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, Routes.loginRoute);
+                },
                 child: Text(
                   AppStrings.skip,
                   textAlign: TextAlign.end,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
             ),
+            _getBottomSheetWidget(),
           ],
         ),
       ),
     );
+  }
+
+  Widget _getBottomSheetWidget() {
+    return Container(
+      color: ColorManager.primary,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // left arrow
+          Padding(
+            padding: EdgeInsets.all(AppPadding.p14),
+            child: GestureDetector(
+              onTap: () {
+                // go to previous slide
+                _pageController.animateToPage(
+                  _getPreviousIndex(),
+                  duration:
+                      Duration(milliseconds: AppConstants.sliderAnimationTime),
+                  curve: Curves.bounceInOut,
+                );
+              },
+              child: SizedBox(
+                width: AppSize.s20,
+                height: AppSize.s20,
+                child: SvgPicture.asset(ImageAssets.leftArrowIc),
+              ),
+            ),
+          ),
+          // circle indicator
+          Row(
+            children: [
+              for (int i = 0; i < _list.length; i++)
+                Padding(
+                  padding: EdgeInsets.all(AppPadding.p8),
+                  child: _getProperCircle(i),
+                ),
+            ],
+          ),
+
+          // right arrow
+          Padding(
+            padding: EdgeInsets.all(AppPadding.p14),
+            child: GestureDetector(
+              onTap: () {
+                // go to next slide
+                _pageController.animateToPage(
+                  _getNextIndex(),
+                  duration:
+                      Duration(milliseconds: AppConstants.sliderAnimationTime),
+                  curve: Curves.bounceInOut,
+                );
+              },
+              child: SizedBox(
+                width: AppSize.s20,
+                height: AppSize.s20,
+                child: SvgPicture.asset(ImageAssets.rightArrowIc),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  int _getPreviousIndex() {
+    int previousIndex = _currentPageIndex - 1;
+    if (previousIndex == -1) previousIndex = _list.length - 1;
+    return previousIndex;
+  }
+
+  int _getNextIndex() {
+    int nextIndex = _currentPageIndex + 1;
+    if (nextIndex == _list.length) nextIndex = 0;
+    return nextIndex;
+  }
+
+  Widget _getProperCircle(int index) {
+    if (index == _currentPageIndex) {
+      return SvgPicture.asset(ImageAssets.hollowCirlceIc);
+    }
+    return SvgPicture.asset(ImageAssets.solidCircleIc);
   }
 }
 
