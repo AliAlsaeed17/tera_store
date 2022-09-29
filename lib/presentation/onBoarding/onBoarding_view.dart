@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tera_store/presentation/resources/assets_manager.dart';
 import 'package:tera_store/presentation/resources/colors_manager.dart';
 import 'package:tera_store/presentation/resources/strings_manager.dart';
+import 'package:tera_store/presentation/resources/values_manager.dart';
 
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({Key? key}) : super(key: key);
@@ -60,8 +62,26 @@ class _OnboardingViewState extends State<OnBoardingView> {
           });
         },
         itemBuilder: (context, index) {
-          return Container();
+          return OnBoardingPage(_list[index]);
         },
+      ),
+      bottomSheet: Container(
+        height: AppSize.s100,
+        color: ColorManager.white,
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () {},
+                child: Text(
+                  AppStrings.skip,
+                  textAlign: TextAlign.end,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -69,15 +89,31 @@ class _OnboardingViewState extends State<OnBoardingView> {
 
 class OnBoardingPage extends StatelessWidget {
   final SliderObject _sliderObject;
-  const OnBoardingPage(this._sliderObject, Key? key) : super(key: key);
+  const OnBoardingPage(this._sliderObject);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: 3,
+        const SizedBox(height: AppSize.s40),
+        Padding(
+          padding: const EdgeInsets.all(AppPadding.p8),
+          child: Text(
+            _sliderObject.title,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.displayLarge,
+          ),
         ),
+        Padding(
+          padding: const EdgeInsets.all(AppPadding.p8),
+          child: Text(
+            _sliderObject.subTitle,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+        ),
+        const SizedBox(height: AppSize.s60),
+        SvgPicture.asset(_sliderObject.image),
       ],
     );
   }
