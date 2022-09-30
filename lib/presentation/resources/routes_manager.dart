@@ -3,7 +3,7 @@ import 'package:tera_store/presentation/auth/forgot_password/forgot_password_vie
 import 'package:tera_store/presentation/auth/login/login_view.dart';
 import 'package:tera_store/presentation/auth/register/register.dart';
 import 'package:tera_store/presentation/main/main_view.dart';
-import 'package:tera_store/presentation/onBoarding/onBoarding_view.dart';
+import 'package:tera_store/presentation/onBoarding/view/onBoarding_view.dart';
 import 'package:tera_store/presentation/resources/strings_manager.dart';
 import 'package:tera_store/presentation/store_details/store_details.dart';
 
