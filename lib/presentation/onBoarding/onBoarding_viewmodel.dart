@@ -1,12 +1,15 @@
-import 'package:tera_store/presentation/base/base.dart';
+import 'dart:async';
+
+import 'package:tera_store/presentation/base/base_view_model.dart';
 
 class OnBoardingViewModel extends BaseViewModel
     with OnBoardingViewModelInputs, OnBoardingViewModelOutputs {
   // stream controllers outputs
+  StreamController _streamController = StreamController();
   // OnBoarding view model inputs
   @override
   void dispose() {
-    // TODO: implement dispose
+    _streamController.close();
   }
 
   @override
