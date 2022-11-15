@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tera_store/presentation/onBoarding/onBoarding_viewmodel.dart';
 import 'package:tera_store/presentation/resources/assets_manager.dart';
 import 'package:tera_store/presentation/resources/colors_manager.dart';
 import 'package:tera_store/presentation/resources/constants_manager.dart';
 import 'package:tera_store/presentation/resources/strings_manager.dart';
 import 'package:tera_store/presentation/resources/values_manager.dart';
 
+import '../../../domain/model.dart';
 import '../../resources/routes_manager.dart';
 
 class OnBoardingView extends StatefulWidget {
@@ -17,37 +19,37 @@ class OnBoardingView extends StatefulWidget {
 }
 
 class _OnboardingViewState extends State<OnBoardingView> {
-  late final List<SliderObject> _list = _getSliderData();
-
   final PageController _pageController = PageController();
+  final OnBoardingViewModel _viewModel = OnBoardingViewModel();
 
-  int _currentPageIndex = 0;
+  void _bind() {
+    _viewModel.start();
+  }
 
-  List<SliderObject> _getSliderData() => [
-        SliderObject(
-          title: AppStrings.onBoardingTitle1,
-          subTitle: AppStrings.onBoardingSubTitle1,
-          image: ImageAssets.onBoardingLogo1,
-        ),
-        SliderObject(
-          title: AppStrings.onBoardingTitle2,
-          subTitle: AppStrings.onBoardingSubTitle2,
-          image: ImageAssets.onBoardingLogo2,
-        ),
-        SliderObject(
-          title: AppStrings.onBoardingTitle3,
-          subTitle: AppStrings.onBoardingSubTitle3,
-          image: ImageAssets.onBoardingLogo3,
-        ),
-        SliderObject(
-          title: AppStrings.onBoardingTitle4,
-          subTitle: AppStrings.onBoardingSubTitle4,
-          image: ImageAssets.onBoardingLogo4,
-        ),
-      ];
+  @override
+  void initState() {
+    _bind();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _viewModel.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: _viewModel.outputSliderViewObject,
+      builder: (context, snapshot) {
+        return _getContentWidget(snapshot.data as SliderViewObject);
+      },
+    );
+  }
+
+  Widget _getContentWidget(SliderViewObject? sliderViewObject) {
+    if (sliderViewObject == null) return Container();
     return Scaffold(
       backgroundColor: ColorManager.white,
       appBar: AppBar(
@@ -60,14 +62,12 @@ class _OnboardingViewState extends State<OnBoardingView> {
       ),
       body: PageView.builder(
         controller: _pageController,
-        itemCount: _list.length,
+        itemCount: sliderViewObject.numOfSlides,
         onPageChanged: (index) {
-          setState(() {
-            _currentPageIndex = index;
-          });
+          _viewModel.onPaeChanged(index);
         },
         itemBuilder: (context, index) {
-          return OnBoardingPage(_list[index]);
+          return OnBoardingPage(sliderViewObject.sliderObject);
         },
       ),
       bottomSheet: Container(
@@ -88,14 +88,14 @@ class _OnboardingViewState extends State<OnBoardingView> {
                 ),
               ),
             ),
-            _getBottomSheetWidget(),
+            _getBottomSheetWidget(sliderViewObject),
           ],
         ),
       ),
     );
   }
 
-  Widget _getBottomSheetWidget() {
+  Widget _getBottomSheetWidget(SliderViewObject sliderViewObject) {
     return Container(
       color: ColorManager.primary,
       child: Row(
@@ -108,7 +108,7 @@ class _OnboardingViewState extends State<OnBoardingView> {
               onTap: () {
                 // go to previous slide
                 _pageController.animateToPage(
-                  _getPreviousIndex(),
+                  _viewModel.goPrevious(),
                   duration:
                       Duration(milliseconds: AppConstants.sliderAnimationTime),
                   curve: Curves.bounceInOut,
@@ -124,10 +124,10 @@ class _OnboardingViewState extends State<OnBoardingView> {
           // circle indicator
           Row(
             children: [
-              for (int i = 0; i < _list.length; i++)
+              for (int i = 0; i < sliderViewObject.numOfSlides; i++)
                 Padding(
                   padding: EdgeInsets.all(AppPadding.p8),
-                  child: _getProperCircle(i),
+                  child: _getProperCircle(i, sliderViewObject.currentIndex),
                 ),
             ],
           ),
@@ -139,7 +139,7 @@ class _OnboardingViewState extends State<OnBoardingView> {
               onTap: () {
                 // go to next slide
                 _pageController.animateToPage(
-                  _getNextIndex(),
+                  _viewModel.goNext(),
                   duration:
                       Duration(milliseconds: AppConstants.sliderAnimationTime),
                   curve: Curves.bounceInOut,
@@ -157,20 +157,8 @@ class _OnboardingViewState extends State<OnBoardingView> {
     );
   }
 
-  int _getPreviousIndex() {
-    int previousIndex = _currentPageIndex - 1;
-    if (previousIndex == -1) previousIndex = _list.length - 1;
-    return previousIndex;
-  }
-
-  int _getNextIndex() {
-    int nextIndex = _currentPageIndex + 1;
-    if (nextIndex == _list.length) nextIndex = 0;
-    return nextIndex;
-  }
-
-  Widget _getProperCircle(int index) {
-    if (index == _currentPageIndex) {
+  Widget _getProperCircle(int index, int currentIndex) {
+    if (index == currentIndex) {
       return SvgPicture.asset(ImageAssets.hollowCirlceIc);
     }
     return SvgPicture.asset(ImageAssets.solidCircleIc);
@@ -207,16 +195,4 @@ class OnBoardingPage extends StatelessWidget {
       ],
     );
   }
-}
-
-class SliderObject {
-  String title;
-  String subTitle;
-  String image;
-
-  SliderObject({
-    required this.title,
-    required this.subTitle,
-    required this.image,
-  });
 }
