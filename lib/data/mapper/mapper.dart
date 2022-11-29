@@ -14,3 +14,15 @@ extension CustomerResponseMapper on CustomerResponse? {
     );
   }
 }
+
+extension ContactResponseMapper on ContactResponse? {
+  Contact toDomain() {
+    // convert response to model
+    // this represent CustomerResponse Object
+    return Contact(
+      phone: this?.phone.orEmpty() ?? Constants.empty,
+      email: this?.email.orEmpty() ?? Constants.empty,
+      link: this?.link.orEmpty() ?? Constants.empty,
+    );
+  }
+}
