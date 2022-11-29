@@ -1,7 +1,8 @@
+import 'package:tera_store/data/reposponse/responses.dart';
 import 'package:tera_store/domain/model.dart';
 import '../../app/extensions.dart';
 
-extension CustomerResponseMapper on Customer? {
+extension CustomerResponseMapper on CustomerResponse? {
   Customer toDomain() {
     // convert response to model
     // this represent CustomerResponse Object
