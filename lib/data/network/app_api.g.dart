@@ -18,7 +18,7 @@ class _AppServiceClient implements AppServiceClient {
   String? baseUrl;
 
   @override
-  Future<AuthenticationResponse> login() async {
+  Future<AuthenticationResponse> login(email, password) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};

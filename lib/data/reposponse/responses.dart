@@ -51,7 +51,7 @@ class AuthenticationResponse extends BaseResponse {
 
   // from json
   factory AuthenticationResponse.fromJson(Map<String, dynamic> json) =>
-      _$AuthenticaionResponseFromJson(json);
+      _$AuthenticationResponseFromJson(json);
   // to json
-  Map<String, dynamic> toJson() => _$AuthenticaionResponseToJson(this);
+  Map<String, dynamic> toJson() => _$AuthenticationResponseToJson(this);
 }
