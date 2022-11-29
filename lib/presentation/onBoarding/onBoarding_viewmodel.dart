@@ -100,15 +100,3 @@ abstract class OnBoardingViewModelInputs {
 abstract class OnBoardingViewModelOutputs {
   Stream<SliderViewObject> get outputSliderViewObject;
 }
-
-class SliderViewObject {
-  SliderObject sliderObject;
-  int numOfSlides;
-  int currentIndex;
-
-  SliderViewObject({
-    required this.sliderObject,
-    required this.numOfSlides,
-    required this.currentIndex,
-  });
-}
