@@ -7,3 +7,13 @@ extension NonNullableString on String? {
     }
   }
 }
+
+extension NonNullableInteger on int? {
+  int onZero() {
+    if (this == null) {
+      return 0;
+    } else {
+      return this!;
+    }
+  }
+}
