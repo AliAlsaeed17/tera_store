@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:tera_store/domain/model.dart';
+import 'package:tera_store/domain/models/model.dart';
 import 'package:tera_store/presentation/base/base_viewmodel.dart';
 
 import '../resources/assets_manager.dart';

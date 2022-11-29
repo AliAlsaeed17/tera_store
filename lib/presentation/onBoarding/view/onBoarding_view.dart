@@ -8,7 +8,7 @@ import 'package:tera_store/presentation/resources/constants_manager.dart';
 import 'package:tera_store/presentation/resources/strings_manager.dart';
 import 'package:tera_store/presentation/resources/values_manager.dart';
 
-import '../../../domain/model.dart';
+import '../../../domain/models/model.dart';
 import '../../resources/routes_manager.dart';
 
 class OnBoardingView extends StatefulWidget {
