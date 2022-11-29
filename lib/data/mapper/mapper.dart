@@ -26,3 +26,14 @@ extension ContactResponseMapper on ContactResponse? {
     );
   }
 }
+
+extension AuthenticationResponseMapper on AuthenticationResponse? {
+  Authentication toDomain() {
+    // convert response to model
+    // this represent CustomerResponse Object
+    return Authentication(
+      customer: this?.customer.toDomain(),
+      contact: this?.contacts.toDomain(),
+    );
+  }
+}
