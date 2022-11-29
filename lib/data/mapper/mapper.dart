@@ -1,6 +1,6 @@
 import 'package:tera_store/app/constants.dart';
 import 'package:tera_store/data/reposponse/responses.dart';
-import 'package:tera_store/domain/model.dart';
+import 'package:tera_store/domain/models/model.dart';
 import '../../app/extensions.dart';
 
 extension CustomerResponseMapper on CustomerResponse? {
