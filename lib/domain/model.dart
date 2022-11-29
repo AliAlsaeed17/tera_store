@@ -42,8 +42,8 @@ class Contact {
 }
 
 class Authentication {
-  Customer customer;
-  Contact contact;
+  Customer? customer;
+  Contact? contact;
 
   Authentication({required this.customer, required this.contact});
 }
