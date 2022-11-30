@@ -8,6 +8,8 @@ import 'package:tera_store/data/network/fauilure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:tera_store/domain/repositories/repository.dart';
 
+import '../network/error_handler.dart';
+
 class RepositoryImpl implements Repository {
   RemoteDataSource _remoteDataSource;
   NetworkInfo _networkInfo;
@@ -19,30 +21,34 @@ class RepositoryImpl implements Repository {
       LoginRequest loginRequest) async {
     if (await _networkInfo.isConnected) {
       // Its connected to internet so its save to call api
-      final response = await _remoteDataSource.login(loginRequest);
-      if (response.status == 0) {
-        // success
-        // return data (either right)
-        return Right(response.toDomain());
-      } else {
-        // failure
-        // returm either right
-        return Left(
-          Failure(
-            code: 409,
-            message: response.message ?? "Bussines error message",
-          ),
-        );
+      try {
+        final response = await _remoteDataSource.login(loginRequest);
+        if (response.status == ApiInternalStatus.success) {
+          // success
+          // return data (either right)
+          return Right(response.toDomain());
+        } else {
+          // failure
+          // returm either right
+          return Left(
+            Failure(
+              code: ApiInternalStatus.failure,
+              message: response.message ?? ResponeMessage.DEFAULT,
+            ),
+          );
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
       }
     } else {
       // return internet connection error
       // return either left
-      return Left(
-        Failure(
-          code: 501,
-          message: "Check your internet connection",
-        ),
-      );
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
   }
+}
+
+class ApiInternalStatus {
+  static const int success = 0;
+  static const int failure = 1;
 }
