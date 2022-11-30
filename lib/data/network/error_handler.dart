@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:tera_store/data/network/fauilure.dart';
 
 enum DataSource {
@@ -68,15 +69,15 @@ extension DataSourceExtension on DataSource {
       case DataSource.SUCCESS:
         return Failure(
             code: ResponeCode.SUCCESS, message: ResponeMessage.SUCCESS);
-        break;
+
       case DataSource.NO_CONTENT:
         return Failure(
             code: ResponeCode.NO_CONTENT, message: ResponeMessage.NO_CONTENT);
-        break;
+
       case DataSource.BAD_REQUEST:
         return Failure(
             code: ResponeCode.BAD_REQUEST, message: ResponeMessage.BAD_REQUEST);
-        break;
+
       case DataSource.FORBBIDEN:
         return Failure(
             code: ResponeCode.FORBBIDEN, message: ResponeMessage.FORBBIDEN);
@@ -85,48 +86,87 @@ extension DataSourceExtension on DataSource {
         return Failure(
             code: ResponeCode.UNAUTHORISED,
             message: ResponeMessage.UNAUTHORISED);
-        break;
+
       case DataSource.NOTFOUND:
         return Failure(
             code: ResponeCode.NOTFOUND, message: ResponeMessage.NOTFOUND);
-        break;
+
       case DataSource.INTERNAL_SERVER_ERROR:
         return Failure(
             code: ResponeCode.INTERNAL_SERVER_ERROR,
             message: ResponeMessage.INTERNAL_SERVER_ERROR);
-        break;
+
       case DataSource.CONNECT_TIMEOUT:
         return Failure(
             code: ResponeCode.CONNECT_TIMEOUT,
             message: ResponeMessage.CONNECT_TIMEOUT);
-        break;
+
       case DataSource.CANCEL:
         return Failure(
             code: ResponeCode.CANCEL, message: ResponeMessage.CANCEL);
-        break;
+
       case DataSource.RECIEVE_TIMEOUT:
         return Failure(
             code: ResponeCode.RECIEVE_TIMEOUT,
             message: ResponeMessage.RECIEVE_TIMEOUT);
-        break;
+
       case DataSource.SEND_TIMEOUT:
         return Failure(
             code: ResponeCode.SEND_TIMEOUT,
             message: ResponeMessage.SEND_TIMEOUT);
-        break;
+
       case DataSource.CACHE_ERROR:
         return Failure(
             code: ResponeCode.CACHE_ERROR, message: ResponeMessage.CACHE_ERROR);
-        break;
+
       case DataSource.NO_INTERNET_CONNECTION:
         return Failure(
             code: ResponeCode.NO_INTERNET_CONNECTION,
             message: ResponeMessage.NO_INTERNET_CONNECTION);
-        break;
+
       case DataSource.DEFAULT:
         return Failure(
             code: ResponeCode.DEFAULT, message: ResponeMessage.DEFAULT);
-        break;
     }
+  }
+}
+
+class ErrorHandler implements Exception {
+  late Failure failure;
+
+  ErrorHandler.handle(dynamic error) {
+    if (error is DioError) {
+      // dio error so its an error from response of API or from dio itself
+      failure = _handleError(error);
+    } else {
+      // default error
+      failure = DataSource.DEFAULT.getFailure();
+    }
+  }
+}
+
+Failure _handleError(DioError error) {
+  switch (error.type) {
+    case DioErrorType.connectTimeout:
+      return DataSource.CONNECT_TIMEOUT.getFailure();
+    case DioErrorType.sendTimeout:
+      return DataSource.SEND_TIMEOUT.getFailure();
+    case DioErrorType.receiveTimeout:
+      return DataSource.RECIEVE_TIMEOUT.getFailure();
+    case DioErrorType.response:
+      if (error.response != null &&
+          error.response?.statusCode != null &&
+          error.response?.statusMessage != null) {
+        return Failure(
+          code: error.response?.statusCode ?? 0,
+          message: error.response?.statusMessage ?? "",
+        );
+      } else {
+        return DataSource.DEFAULT.getFailure();
+      }
+    case DioErrorType.cancel:
+      return DataSource.CANCEL.getFailure();
+    case DioErrorType.other:
+      return DataSource.DEFAULT.getFailure();
   }
 }
