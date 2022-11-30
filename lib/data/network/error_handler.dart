@@ -14,6 +14,7 @@ enum DataSource {
   SEND_TIMEOUT,
   CACHE_ERROR,
   NO_INTERNET_CONNECTION,
+  DEFAULT,
 }
 
 class ResponeCode {
@@ -33,7 +34,7 @@ class ResponeCode {
   static const int SEND_TIMEOUT = -4;
   static const int CACHE_ERROR = -5;
   static const int NO_INTERNET_CONNECTION = -6;
-  static const int UNKNOWN = -7;
+  static const int DEFAULT = -7;
 }
 
 class ResponeMessage {
@@ -58,7 +59,7 @@ class ResponeMessage {
   static const String CACHE_ERROR = "Cache error ,Try again later";
   static const String NO_INTERNET_CONNECTION =
       "Please check your internet connection";
-  static const String UNKNOWN = "Something went wrong ,Try again later";
+  static const String DEFAULT = "Something went wrong ,Try again later";
 }
 
 extension DataSourceExtension on DataSource {
@@ -121,6 +122,10 @@ extension DataSourceExtension on DataSource {
         return Failure(
             code: ResponeCode.NO_INTERNET_CONNECTION,
             message: ResponeMessage.NO_INTERNET_CONNECTION);
+        break;
+      case DataSource.DEFAULT:
+        return Failure(
+            code: ResponeCode.DEFAULT, message: ResponeMessage.DEFAULT);
         break;
     }
   }
