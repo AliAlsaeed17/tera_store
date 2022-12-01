@@ -12,18 +12,17 @@ const String DEFAULT_LANGUAGE = "language";
 class DioFactory {
   Future<Dio> getDio() async {
     Dio dio = Dio();
-    int _timeout = 60 * 1000;
     Map<String, String> headers = {
       CONTENT_TYPE: APPLICATION_JSON,
       ACCEPT: APPLICATION_JSON,
-      AUTHORIZATION: "SEND TOKEN HERE",
+      AUTHORIZATION: Constants.token,
       DEFAULT_LANGUAGE: "en", //TODO: get language from app pref
     };
     dio.options = BaseOptions(
       baseUrl: Constants.baseUrl,
       headers: headers,
-      sendTimeout: _timeout,
-      receiveTimeout: _timeout,
+      sendTimeout: Constants.api_timeout,
+      receiveTimeout: Constants.api_timeout,
     );
     if (!kReleaseMode) {
       // its debug mode so print app logs
