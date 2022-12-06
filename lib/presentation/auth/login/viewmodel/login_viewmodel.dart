@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:tera_store/domain/usecase/login_usecase.dart';
 import 'package:tera_store/presentation/common/freezed_data_classes.dart';
 
 import '../../../base/base_viewmodel.dart';
@@ -12,6 +13,8 @@ class LoginViewModel extends BaseViewModel
       StreamController<String>.broadcast();
 
   var loginObject = LoginObject("", "");
+  LoginUseCase _loginUseCase;
+  LoginViewModel(this._loginUseCase);
   // inputs
   @override
   void dispose() {
@@ -31,19 +34,27 @@ class LoginViewModel extends BaseViewModel
   Sink get inputUserName => _userNameStreamController.sink;
 
   @override
-  login() {
-    // TODO: implement login
-    throw UnimplementedError();
+  login() async {
+    (await _loginUseCase.execute(
+      LoginUseCaseInput(
+          email: loginObject.userName, password: loginObject.password),
+    ))
+        .fold(
+      (failure) => {print(failure.message)},
+      (data) => {print(data.customer?.name)},
+    );
   }
 
   @override
   setPassword(String password) {
     inputPassword.add(password);
+    loginObject = loginObject.copyWith(password: password);
   }
 
   @override
   setUserName(String userName) {
     inputUserName.add(userName);
+    loginObject = loginObject.copyWith(userName: userName);
   }
 
   // outputs
