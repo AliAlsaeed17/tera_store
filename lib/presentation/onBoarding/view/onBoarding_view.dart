@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tera_store/presentation/onBoarding/onBoarding_viewmodel.dart';
 import 'package:tera_store/presentation/resources/assets_manager.dart';
 import 'package:tera_store/presentation/resources/colors_manager.dart';
 import 'package:tera_store/presentation/resources/constants_manager.dart';
@@ -10,6 +9,7 @@ import 'package:tera_store/presentation/resources/values_manager.dart';
 
 import '../../../domain/models/model.dart';
 import '../../resources/routes_manager.dart';
+import '../viewmodel/onBoarding_viewmodel.dart';
 
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({Key? key}) : super(key: key);

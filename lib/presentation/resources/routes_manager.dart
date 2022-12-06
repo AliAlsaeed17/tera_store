@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tera_store/presentation/auth/forgot_password/forgot_password_view.dart';
-import 'package:tera_store/presentation/auth/login/login_view.dart';
+import 'package:tera_store/presentation/auth/login/view/login_view.dart';
+
 import 'package:tera_store/presentation/auth/register/register.dart';
 import 'package:tera_store/presentation/main/main_view.dart';
 import 'package:tera_store/presentation/onBoarding/view/onBoarding_view.dart';
